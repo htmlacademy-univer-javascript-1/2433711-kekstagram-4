@@ -1,1 +1,68 @@
+const DESCRIPTIONS = [
+  'Make it happen (‘Сделай это’)',
+  'Morning coffee, because anything else is worthless (‘Утренний кофе, потому что все остальное бесполезно’).',
+  'FRI-nally (‘Наконец-то, пятница’).',
+  'Good vibes only (‘Только позитивное настроение’).',
+  'Follow your heart (‘Следуй за своим сердцем’).',
+  ' Aspire to inspire (‘Стремись вдохновлять’).',
+  'Yes or No? (‘Да или нет?’).',
+  ' Never look back (‘ Никогда не смотри назад’).',
+];
+const COMMENTS = [
+  'Всё отлично!',
+  'В целом всё неплохо. Но не всё.',
+  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
+];
+const NAMES = [
+  'Антон',
+  'Евгений',
+  'Пётр',
+  'Саня',
+  'Гриша',
+  'Арсений',
+  'Кабанчик',
+];
+const PHOTO_COUNT = 25;
 
+const getRandomInt = (min, max) => {
+  const result = Math.random() * (max - min + 1) + min;
+  return Math.floor(result);
+};
+
+const getUniqueInt = (min, max) => {
+  const previouesValues = [];
+  return function () {
+    let randomNumber = getRandomInt(min, max);
+    if (previouesValues.length >= max - min + 1) {
+      return null;
+    }
+    while (previouesValues.includes(randomNumber)) {
+      randomNumber = getRandomInt(min, max);
+    }
+    previouesValues.push(randomNumber);
+    return randomNumber;
+  };
+};
+
+const generatePhotoId = getUniqueInt(1, 25);
+const generateCommentId = getUniqueInt(1, 1000000000000);
+const generateUrlId = getUniqueInt(1, 25);
+
+const createComment = () => ({
+  id: generateCommentId(),
+  avatar: `img/avatar-{{${getRandomInt(1, 6)}}}.svg`,
+  message: COMMENTS[getRandomInt(0, COMMENTS.length - 1)],
+  name: NAMES[(0, getRandomInt(0, NAMES.length - 1))],
+});
+const createPhoto = () => ({
+  id: generatePhotoId(),
+  url: `photos/{{${generateUrlId()}}}.jpg`,
+  description: DESCRIPTIONS[getRandomInt(0, DESCRIPTIONS.length - 1)],
+  likes: getRandomInt(15, 200),
+  comments: Array.from({ length: getRandomInt(0, 30) }, createComment),
+});
+
+const photoArray = Array.from({ length: PHOTO_COUNT }, createPhoto);

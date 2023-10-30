@@ -7,9 +7,9 @@ const isPalindrome = (checkedString) =>
 
 const findDigit = (value) => {
   value.toString();
-  let arr = [];
+  const arr = [];
   for (let i = 0; i < value.length; i++) {
-    let temp = parseInt(value[i], 10);
+    const temp = parseInt(value[i], 10);
     if (!isNaN(temp)) {
       arr.push(temp);
     }
