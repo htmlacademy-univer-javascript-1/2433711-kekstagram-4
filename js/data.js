@@ -3,7 +3,7 @@ import {
   generatePhotoId,
   generateUrlId,
   getRandomInt,
-} from './util';
+} from './util.js';
 const DESCRIPTIONS = [
   'Make it happen (‘Сделай это’)',
   'Morning coffee, because anything else is worthless (‘Утренний кофе, потому что все остальное бесполезно’).',
@@ -46,5 +46,5 @@ const createPhoto = () => ({
   likes: getRandomInt(15, 200),
   comments: Array.from({ length: getRandomInt(0, 30) }, createComment),
 });
-export const createPhotoPages = () =>
-  Array.from({ length: PHOTO_COUNT }, createPhoto);
+const createPhotoPages = () => Array.from({ length: PHOTO_COUNT }, createPhoto);
+export { createPhotoPages };

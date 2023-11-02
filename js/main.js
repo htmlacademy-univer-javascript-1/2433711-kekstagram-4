@@ -1,2 +1,2 @@
-import { createPhotoPages } from './data';
-console.log(createPhotoPages);
+import { createPhotoPages } from './data.js';
+console.log(createPhotoPages());
