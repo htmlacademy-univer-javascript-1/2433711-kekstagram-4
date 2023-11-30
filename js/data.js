@@ -3,7 +3,7 @@ import {
   generatePhotoId,
   generateUrlId,
   getRandomInt,
-} from './util';
+} from './util.js';
 const DESCRIPTIONS = [
   'Make it happen (‘Сделай это’)',
   'Morning coffee, because anything else is worthless (‘Утренний кофе, потому что все остальное бесполезно’).',
@@ -35,16 +35,16 @@ const PHOTO_COUNT = 25;
 
 const createComment = () => ({
   id: generateCommentId(),
-  avatar: `img/avatar-{{${getRandomInt(1, 6)}}}.svg`,
+  avatar: `img/avatar-${getRandomInt(1, 6)}.svg`,
   message: COMMENTS[getRandomInt(0, COMMENTS.length - 1)],
   name: NAMES[(0, getRandomInt(0, NAMES.length - 1))],
 });
 const createPhoto = () => ({
   id: generatePhotoId(),
-  url: `photos/{{${generateUrlId()}}}.jpg`,
+  url: `photos/${generateUrlId()}.jpg`,
   description: DESCRIPTIONS[getRandomInt(0, DESCRIPTIONS.length - 1)],
   likes: getRandomInt(15, 200),
   comments: Array.from({ length: getRandomInt(0, 30) }, createComment),
 });
-export const createPhotoPages = () =>
-  Array.from({ length: PHOTO_COUNT }, createPhoto);
+const createPhotoPages = () => Array.from({ length: PHOTO_COUNT }, createPhoto);
+export { createPhotoPages };
