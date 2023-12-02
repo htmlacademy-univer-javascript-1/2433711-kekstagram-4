@@ -1,2 +1,2 @@
 import './photos.js';
-//console.log(createPhotoPages());
+import './big-picture.js';
