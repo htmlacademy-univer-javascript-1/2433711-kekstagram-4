@@ -6,11 +6,11 @@ const bigPictureDescription = bigPicture.querySelector('.social__caption');
 const bigPictureLikes = bigPicture.querySelector('.likes-count');
 const bigPictureCommentsCounter = bigPicture.querySelector('.comments-count');
 const bigPictureCommentList = bigPicture.querySelector('.social__comments');
-
-const commentCounter = bigPicture.querySelector('.social__comment-count');
-const commentLoader = bigPicture.querySelector('.comments-loader');
-
+let displayedComments = 0;
 const closeElement = bigPicture.querySelector('#picture-cancel');
+let commentsList;
+const commentLoader = bigPicture.querySelector('.comments-loader');
+const commentsShowedElement = bigPicture.querySelector('.comments-showed-now');
 /*Закрытие окна*/
 const onDocumentKeydown = (evt) => {
   if (evt.key === 'Escape') {
@@ -27,15 +27,17 @@ const hideBigPicture = () => {
   bigPicture.classList.add('hidden');
   startBodyMovement();
   document.removeEventListener('keydown', onDocumentKeydown);
+  bigPictureCommentList.innerHTML = '';
+  commentsShowedElement.textContent = 5;
+  commentLoader.classList.remove('hidden');
 };
 
 closeElement.addEventListener('click', () => {
   hideBigPicture();
 });
-/*Комментарии*/
+
 const insertComments = (comments) => {
   const commentsFragment = document.createDocumentFragment();
-
   for (const comment of comments) {
     const bigPictureComment = document
       .querySelector('#comment')
@@ -51,10 +53,36 @@ const insertComments = (comments) => {
   bigPictureCommentList.append(commentsFragment);
 };
 
-const hideCommentCounter = () => {
-  commentCounter.classList.add('hidden');
-  commentLoader.classList.add('hidden');
+const sliceComments = (comments) => {
+  const slisedComments = comments.slice(
+    displayedComments,
+    displayedComments + 5
+  );
+  console.log(comments);
+  console.log(slisedComments);
+  console.log(displayedComments);
+  insertComments(slisedComments);
 };
+const countDisplayedComments = () => {
+  if (displayedComments + 5 >= commentsList.length) {
+    console.log(
+      displayedComments + 5,
+      commentsList.length,
+      displayedComments + 5 >= commentsList.length
+    );
+    commentLoader.classList.add('hidden');
+    return commentsList.length;
+  }
+  return displayedComments + 5;
+};
+commentLoader.addEventListener('click', () => {
+  displayedComments = countDisplayedComments();
+  commentsShowedElement.textContent = displayedComments;
+  sliceComments(commentsList);
+});
+
+/*const hideCommentCounter = () => {
+};*/
 /*Открытие окна*/
 const stopBodyMovement = () => {
   document.body.classList.add('modal-open');
@@ -67,9 +95,10 @@ export const showBigPicture = (picture, url, description, likes, comments) => {
     bigPictureImage.src = url;
     bigPictureLikes.textContent = likes;
     bigPictureCommentsCounter.textContent = comments.length;
-    insertComments(comments);
-    hideCommentCounter();
+    sliceComments(comments);
     stopBodyMovement();
+    commentsList = comments;
+    displayedComments = 0;
     document.addEventListener('keydown', onDocumentKeydown);
   });
 };
