@@ -3,6 +3,13 @@ export const getRandomInt = (min, max) => {
   return Math.floor(result);
 };
 
+export const stopBodyMovement = () => {
+  document.body.classList.add('modal-open');
+};
+export const startBodyMovement = () => {
+  document.body.classList.remove('modal-open');
+};
+
 const getUniqueInt = (min, max) => {
   const previouesValues = [];
   return function () {
