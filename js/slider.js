@@ -33,11 +33,6 @@ const addListenersOnEffect = (effect) => {
     selectedEffect = effect.value;
     if (effect.value !== 'none') {
       sliderContainer.classList.remove('hidden');
-      console.log(
-        `filter:${filters[effect.value]['filter']}(${
-          filters[effect.value]['max']
-        }${filters[effect.value]['measurment']})`
-      );
       imageModalPreview.style = `filter: ${filters[effect.value]['filter']}(${
         filters[effect.value]['max']
       }${filters[effect.value]['measurment']}
