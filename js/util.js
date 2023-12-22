@@ -12,7 +12,7 @@ export const startBodyMovement = () => {
   document.body.classList.remove('modal-open');
 };
 
-const getUniqueInt = (min, max) => {
+export const getUniqueInt = (min, max) => {
   const previouesValues = [];
   return function () {
     let randomNumber = getRandomInt(min, max);
@@ -46,6 +46,13 @@ export const showAlert = (message) => {
     alertContainer.remove();
   }, ALERT_SHOW_TIME);
 };
+export function debounce(callback, timeoutDelay = 1000) {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
 export const generatePhotoId = getUniqueInt(1, 25);
 export const generateCommentId = getUniqueInt(1, 1000000000000);
 export const generateUrlId = getUniqueInt(1, 25);
