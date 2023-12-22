@@ -1,7 +1,7 @@
 import { createMiniatures } from './miniatures.js';
 import './big-picture.js';
 import './upload-form.js';
-import './slider.js';
+import './effects.js';
 import { getData } from './api.js';
 import { showAlert, debounce } from './util.js';
 import {
