@@ -1,4 +1,8 @@
-import { stopBodyMovement, startBodyMovement } from './util.js';
+import {
+  stopBodyMovement,
+  startBodyMovement,
+  isEscapeButton,
+} from './utils.js';
 
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImage = bigPicture
@@ -14,24 +18,24 @@ let commentsList;
 const commentLoader = bigPicture.querySelector('.comments-loader');
 const commentsShowedElement = bigPicture.querySelector('.comments-showed-now');
 /*Закрытие окна*/
-const onDocumentKeydown = (evt) => {
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
-    hideBigPicture();
-  }
-};
 
-const hideBigPicture = () => {
+const hideModal = () => {
   bigPicture.classList.add('hidden');
   startBodyMovement();
   bigPictureCommentList.innerHTML = '';
   displayedComments = 0;
   commentLoader.classList.remove('hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
-  closeElement.removeEventListener('click', hideBigPicture);
+  closeElement.removeEventListener('click', hideModal);
 };
 
-closeElement.addEventListener('click', hideBigPicture);
+function onDocumentKeydown(evt) {
+  if (isEscapeButton) {
+    evt.preventDefault();
+    hideModal();
+  }
+}
+closeElement.addEventListener('click', hideModal);
 
 const insertComments = (comments) => {
   const commentsFragment = document.createDocumentFragment();
@@ -83,6 +87,6 @@ export const showBigPicture = (picture, url, description, likes, comments) => {
     commentsShowedElement.textContent = displayedComments;
     sliceComments(comments);
     document.addEventListener('keydown', onDocumentKeydown);
-    closeElement.addEventListener('click', hideBigPicture);
+    closeElement.addEventListener('click', hideModal);
   });
 };
