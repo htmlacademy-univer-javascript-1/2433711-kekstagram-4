@@ -78,7 +78,7 @@
               </fieldset>
 
               <!-- Форма редактирования изображения -->
-              <div class="img-upload__overlay hidden">
+              <div class="img-upload__overlay hidden" style="z-index: 1">
                 <div class="img-upload__wrapper">
                   <div class="img-upload__preview-container">
                     <!-- Изменение размера изображения -->
@@ -413,7 +413,7 @@
 
     <!-- Сообщение с ошибкой загрузки изображения -->
     <template id="error">
-      <section class="error">
+      <section class="error hidden">
         <div class="error__inner">
           <h2 class="error__title">Ошибка загрузки файла</h2>
           <button type="button" class="error__button">
@@ -425,7 +425,7 @@
 
     <!-- Сообщение об успешной загрузке изображения -->
     <template id="success">
-      <section class="success">
+      <section class="success hidden">
         <div class="success__inner">
           <h2 class="success__title">Изображение успешно загружено</h2>
           <button type="button" class="success__button">Круто!</button>

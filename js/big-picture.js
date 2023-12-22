@@ -25,7 +25,7 @@ const hideBigPicture = () => {
   bigPicture.classList.add('hidden');
   startBodyMovement();
   bigPictureCommentList.innerHTML = '';
-  commentsShowedElement.textContent = 5;
+  displayedComments = 0;
   commentLoader.classList.remove('hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
   closeElement.removeEventListener('click', hideBigPicture);
@@ -80,6 +80,7 @@ export const showBigPicture = (picture, url, description, likes, comments) => {
     stopBodyMovement();
     commentsList = comments;
     displayedComments = countDisplayedComments();
+    commentsShowedElement.textContent = displayedComments;
     sliceComments(comments);
     document.addEventListener('keydown', onDocumentKeydown);
     closeElement.addEventListener('click', hideBigPicture);

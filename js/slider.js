@@ -49,6 +49,7 @@ const addListenersOnEffect = (effect) => {
       });
     } else {
       sliderContainer.classList.add('hidden');
+
       imageModalPreview.removeAttribute('style');
     }
   });
@@ -70,7 +71,6 @@ sliderElement.noUiSlider.on('update', () => {
 for (const effect of effects) {
   addListenersOnEffect(effect);
 }
-export const deleteSlider = () => {
-  sliderElement.noUiSlider.destroy();
+export const hideSlider = () => {
+  sliderContainer.classList.add('hidden');
 };
-/*noUiSlider.create(effectLevelValue,*/
