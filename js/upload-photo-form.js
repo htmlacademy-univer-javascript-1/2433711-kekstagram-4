@@ -1,7 +1,14 @@
-import { startBodyMovement, stopBodyMovement } from './util.js';
-import { pristine } from './validate-form.js';
-import { withUploadOpening, withUploadClosing } from './scale-control.js';
-import { hideSlider } from './effects.js';
+import {
+  startBodyMovement,
+  stopBodyMovement,
+  isEscapeButton,
+} from './utils.js';
+import { pristine } from './validate-photo-hashtags-and-description.js';
+import {
+  withUploadOpening,
+  withUploadClosing,
+} from './upload-photo-scale-control.js';
+import { hideSlider } from './effects-no-UI-slider.js';
 import { sendData } from './api.js';
 const FILE_TYPES = ['jpg', 'jpeg', 'png', 'gif', 'svg'];
 const uploadForm = document.querySelector('.img-upload__form');
@@ -25,19 +32,6 @@ document.body.append(successMessage);
 document.body.append(errorMessage);
 let currentMessage;
 let currentButton;
-const onDocumentKeydown = (evt) => {
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
-    if (
-      currentMessage !== undefined &&
-      !currentMessage.classList.contains('hidden')
-    ) {
-      closeMessage();
-    } else {
-      hideModal();
-    }
-  }
-};
 
 const hideModal = () => {
   if (
@@ -64,11 +58,25 @@ const closeMessage = () => {
     document.removeEventListener('keydown', onDocumentKeydown);
   }
 };
-const isClickOutsideWindow = (evt) => {
+
+function onDocumentKeydown(evt) {
+  if (isEscapeButton) {
+    evt.preventDefault();
+    if (
+      currentMessage !== undefined &&
+      !currentMessage.classList.contains('hidden')
+    ) {
+      closeMessage();
+    } else {
+      hideModal();
+    }
+  }
+}
+function isClickOutsideWindow(evt) {
   if (evt.target === currentMessage) {
     closeMessage();
   }
-};
+}
 const showMessage = () => {
   currentButton.addEventListener('click', closeMessage);
   document.addEventListener('click', isClickOutsideWindow);

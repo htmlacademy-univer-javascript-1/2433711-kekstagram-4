@@ -1,4 +1,4 @@
-import { showBigPicture } from './big-picture.js';
+import { showBigPicture } from './fullscreen-photo-modal.js';
 import { defaultSort } from './filters.js';
 const template = document
   .querySelector('#picture')
