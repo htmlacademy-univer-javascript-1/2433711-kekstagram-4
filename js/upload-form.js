@@ -1,15 +1,16 @@
 import { startBodyMovement, stopBodyMovement } from './util.js';
 import { pristine } from './validate-form.js';
 import { withUploadOpening, withUploadClosing } from './scale-control.js';
-import { hideSlider } from './slider.js';
+import { hideSlider } from './effects.js';
 import { sendData } from './api.js';
-
+const FILE_TYPES = ['jpg', 'jpeg', 'png', 'gif', 'svg'];
 const uploadForm = document.querySelector('.img-upload__form');
 const fileInput = document.querySelector('#upload-file');
 const imageModal = document.querySelector('.img-upload__overlay');
 const imageModalPreview = document.querySelector('img.img-upload__preview');
 const editorCloser = document.querySelector('.img-upload__cancel');
 const hashtagInput = document.querySelector('.text__hashtags');
+const effectsPrewiew = document.querySelectorAll('.effects__preview_img');
 const submitButton = document.querySelector('.img-upload__submit');
 const descriptionInput = document.querySelector('.text__description');
 const successMessage = document
@@ -73,14 +74,28 @@ const showMessage = () => {
   document.addEventListener('click', isClickOutsideWindow);
   currentMessage.classList.remove('hidden');
 };
-
+const changeEffectsImg = (src) => {
+  effectsPrewiew.forEach((prewiew) => {
+    prewiew.src = src;
+    prewiew.style.width = '72px';
+    prewiew.style.height = '72px';
+  });
+};
 fileInput.addEventListener('change', () => {
   imageModal.classList.remove('hidden');
-  imageModalPreview.src = URL.createObjectURL(fileInput.files[0]);
-  stopBodyMovement();
-  document.addEventListener('keydown', onDocumentKeydown);
-  editorCloser.addEventListener('click', hideModal);
-  withUploadOpening();
+  const file = fileInput.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  if (matches) {
+    imageModal.classList.remove('hidden');
+    const url = URL.createObjectURL(fileInput.files[0]);
+    imageModalPreview.src = url;
+    changeEffectsImg(url);
+    stopBodyMovement();
+    document.addEventListener('keydown', onDocumentKeydown);
+    editorCloser.addEventListener('click', hideModal);
+    withUploadOpening();
+  }
 });
 const blockSubmitButton = () => {
   submitButton.setAttribute('disabled', '');
