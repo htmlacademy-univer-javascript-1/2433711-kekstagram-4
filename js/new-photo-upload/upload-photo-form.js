@@ -40,7 +40,7 @@ const changeEffectsImg = (src) => {
     prewiew.style.height = '72px';
   });
 };
-
+/**/
 const hideModal = () => {
   if (
     hashtagInput !== document.activeElement &&
