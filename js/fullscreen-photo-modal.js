@@ -88,7 +88,6 @@ export const showBigPicture = (picture, url, description, likes, comments) => {
     bigPictureCommentsCounter.textContent = comments.length;
     stopBodyMovement();
     commentsList = comments;
-    console.log(comments);
     displayedComments = countDisplayedComments();
     commentsShowedElement.textContent = displayedComments;
     sliceComments(comments);
