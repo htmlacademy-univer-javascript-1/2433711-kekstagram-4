@@ -1,12 +1,20 @@
-import { startBodyMovement, stopBodyMovement } from './util.js';
-import { pristine } from './validate-form.js';
-import { withUploadOpening, withUploadClosing } from './scale-control.js';
-import { hideSlider } from './slider.js';
-import { sendData } from './api.js';
-
+import {
+  startBodyMovement,
+  stopBodyMovement,
+  isEscapeButton,
+} from '../utils.js';
+import { pristine } from './validate-photo-hashtags-and-description.js';
+import {
+  withUploadOpening,
+  withUploadClosing,
+} from './upload-photo-scale-control.js';
+import { hideSlider } from './effects-no-UI-slider.js';
+import { sendData } from '../api.js';
+const FILE_TYPES = ['jpg', 'jpeg', 'png', 'gif', 'svg'];
 const uploadForm = document.querySelector('.img-upload__form');
 const fileInput = document.querySelector('#upload-file');
 const imageModal = document.querySelector('.img-upload__overlay');
+const effectsPrewiew = document.querySelectorAll('.effects__preview_img');
 const imageModalPreview = document.querySelector('img.img-upload__preview');
 const editorCloser = document.querySelector('.img-upload__cancel');
 const hashtagInput = document.querySelector('.text__hashtags');
@@ -24,18 +32,13 @@ document.body.append(successMessage);
 document.body.append(errorMessage);
 let currentMessage;
 let currentButton;
-const onDocumentKeydown = (evt) => {
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
-    if (
-      currentMessage !== undefined &&
-      !currentMessage.classList.contains('hidden')
-    ) {
-      closeMessage();
-    } else {
-      hideModal();
-    }
-  }
+
+const changeEffectsImg = (src) => {
+  effectsPrewiew.forEach((prewiew) => {
+    prewiew.src = src;
+    prewiew.style.width = '72px';
+    prewiew.style.height = '72px';
+  });
 };
 
 const hideModal = () => {
@@ -48,6 +51,7 @@ const hideModal = () => {
       document.removeEventListener('keydown', onDocumentKeydown);
     }
     editorCloser.removeEventListener('click', hideModal);
+    uploadForm.removeEventListener('submit', formSumbitHandler);
     startBodyMovement();
     withUploadClosing();
     hideSlider();
@@ -63,34 +67,41 @@ const closeMessage = () => {
     document.removeEventListener('keydown', onDocumentKeydown);
   }
 };
-const isClickOutsideWindow = (evt) => {
+
+function onDocumentKeydown(evt) {
+  if (isEscapeButton(evt)) {
+    evt.preventDefault();
+    if (
+      currentMessage !== undefined &&
+      !currentMessage.classList.contains('hidden')
+    ) {
+      closeMessage();
+    } else {
+      hideModal();
+    }
+  }
+}
+
+function isClickOutsideWindow(evt) {
   if (evt.target === currentMessage) {
     closeMessage();
   }
-};
+}
 const showMessage = () => {
   currentButton.addEventListener('click', closeMessage);
   document.addEventListener('click', isClickOutsideWindow);
   currentMessage.classList.remove('hidden');
 };
-
-fileInput.addEventListener('change', () => {
-  imageModal.classList.remove('hidden');
-  imageModalPreview.src = URL.createObjectURL(fileInput.files[0]);
-  stopBodyMovement();
-  document.addEventListener('keydown', onDocumentKeydown);
-  editorCloser.addEventListener('click', hideModal);
-  withUploadOpening();
-});
 const blockSubmitButton = () => {
   submitButton.setAttribute('disabled', '');
   submitButton.value = 'Публикую';
 };
+
 const unlockSubmitButton = () => {
   submitButton.removeAttribute('disabled');
   submitButton.value = 'Опубликовать';
 };
-uploadForm.addEventListener('submit', (evt) => {
+const formSumbitHandler = (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if (isValid) {
@@ -108,5 +119,22 @@ uploadForm.addEventListener('submit', (evt) => {
         showMessage();
       })
       .finally(unlockSubmitButton);
+  }
+};
+
+fileInput.addEventListener('change', () => {
+  const file = fileInput.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  if (matches) {
+    imageModal.classList.remove('hidden');
+    const url = URL.createObjectURL(fileInput.files[0]);
+    imageModalPreview.src = url;
+    changeEffectsImg(url);
+    stopBodyMovement();
+    document.addEventListener('keydown', onDocumentKeydown);
+    editorCloser.addEventListener('click', hideModal);
+    uploadForm.addEventListener('submit', formSumbitHandler);
+    withUploadOpening();
   }
 });

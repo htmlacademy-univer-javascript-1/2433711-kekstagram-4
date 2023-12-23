@@ -1,4 +1,4 @@
-import { getRandomInt } from './util.js';
+import { getRandomInt } from './utils.js';
 const defaultFilter = document.querySelector('#filter-default');
 const randomFilter = document.querySelector('#filter-random');
 const discussedFilter = document.querySelector('#filter-discussed');
@@ -15,9 +15,6 @@ export const randomizePhotos = (photoA, photoB) => {
 };
 export const defaultSort = (photoA, photoB) => 0;
 
-/*const defaultFilterListener = (cb) =>{
-  defaultFilter.addEventListener('click',)
-}*/
 export const setDiscussedFilter = (cb) => {
   discussedFilter.addEventListener('click', () => {
     randomFilter.classList.remove('img-filters__button--active');

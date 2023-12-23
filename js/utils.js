@@ -1,5 +1,5 @@
 const ALERT_SHOW_TIME = 5000;
-
+const TIMEOUT_DELAY = 500;
 export const getRandomInt = (min, max) => {
   const result = Math.random() * (max - min + 1) + min;
   return Math.floor(result);
@@ -46,13 +46,14 @@ export const showAlert = (message) => {
     alertContainer.remove();
   }, ALERT_SHOW_TIME);
 };
-export function debounce(callback, timeoutDelay = 1000) {
+export const isEscapeButton = (evt) => evt.key === 'Escape';
+export const debounce = (callback, timeoutDelay = TIMEOUT_DELAY) => {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
-}
+};
 export const generatePhotoId = getUniqueInt(1, 25);
 export const generateCommentId = getUniqueInt(1, 1000000000000);
 export const generateUrlId = getUniqueInt(1, 25);
